@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../Components/Shared/NavBar/NavBar";
+import "../App.css"
 
 
 const MainLayOut = () => {

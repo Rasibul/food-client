@@ -8,7 +8,7 @@ const Testimonial = () => {
         <div className="section-container">
             <div className="flex flex-col md:flex-row items-center justify-between gap-12">
                 <div className="md:w-1/2">
-                    <img src="https://i.ibb.co/XD4jQ4b/testimonials.png" alt="" />
+                    <img src="https://i.ibb.co/XD4jQ4b/testimonials.png" alt="best cheif" />
                 </div>
                 <div className="md:w-1/2">
                     <div className="text-left md:w-4/5">

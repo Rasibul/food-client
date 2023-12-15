@@ -26,7 +26,7 @@ const FoodCard = ({ item }) => {
                 <h2 className="card-title text-lg md:text-xl">{item?.name}</h2>
                 <p className="hidden md:block">{item?.recipe}</p>
                 <div className="card-actions flex justify-between items-center mt-2">
-                    <h5 className="font-semibold"><span className="text-sm text-red">$</span>{item.price}</h5>
+                    <h5 className="font-semibold">Price: <span className="text-sm text-red">$</span>{item.price}</h5>
                     <button className="btn bg-green text-white">Buy Now</button>
                 </div>
             </div>

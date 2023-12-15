@@ -11,3 +11,11 @@ header, nav{
 .section-container{
   @apply max-w-screen-2xl container mx-auto xl:px-24 px-4
 }
+
+.subtitle{
+  @apply text-red uppercase tracking-wide font-semibold text-lg;
+}
+
+.title{
+  @apply  text-4xl md:text-5xl md:leading-snug font-bold my-2;
+}

@@ -40,7 +40,6 @@ const Testimonial = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="space-y-1">
                                 <h5 className="text-lg font-semibold">Customer Feedback</h5>
                                 <div className="flex items-center gap-2"><FaStar className="text-yellow-400" /> <span className="font-medium">4.9</span> <span className="text-[#807E7E]">(18.6k Reviews)</span></div>

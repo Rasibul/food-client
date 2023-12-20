@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import ModalBox from "../ModalBox/ModalBox";
-// import { useState } from "react";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
     const {
@@ -11,7 +12,39 @@ const SignUp = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+    const { createUser,signUpWithGmail } = useAuth()
+
+    const handelLogin = () => {
+        signUpWithGmail()
+            .then(() => {
+                // const user = result.user;
+                toast.success('User Login Successfully!');
+                navigate('/')
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const onSubmit = (data) => {
+        // const name = data.name
+        const email = data.email
+        const password = data.password
+        createUser(email, password)
+            .then((result) => {
+                const user = result.user
+                console.log(user)
+                toast.success('create an user Successfully!')
+                // document.getElementById("my_modal_5").close()
+                navigate(from, { replace: true })
+            }).catch((err) => {
+                const errorCode = err.code
+                const errorMessage = err.message
+            })
+    }
     return (
         <div className="max-w-md mx-auto my-10 shadow w-full flex justify-center items-center bg-white">
             <div className="modal-action flex flex-col justify-center mt-0">
@@ -19,7 +52,7 @@ const SignUp = () => {
                     <h3 className="font-bold text-lg">Create An Account!</h3>
 
                     {/* Name */}
-                    <div className="form-control">
+                    {/* <div className="form-control">
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
@@ -27,8 +60,10 @@ const SignUp = () => {
                             type="text"
                             placeholder="Your Name Here"
                             className="input input-bordered"
+                        // name="name"
+                        // {...register("name")}
                         />
-                    </div>
+                    </div> */}
                     {/* email */}
                     <div className="form-control">
                         <label className="label">
@@ -91,7 +126,7 @@ const SignUp = () => {
 
                 {/* social sign in */}
                 <div className="text-center space-x-3 mb-5">
-                    <button className="btn btn-circle hover:bg-green hover:text-white">
+                    <button onClick={handelLogin} className="btn btn-circle hover:bg-green hover:text-white">
                         <FaGoogle />
                     </button>
                     <button className="btn btn-circle hover:bg-green hover:text-white">

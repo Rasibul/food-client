@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import logo from '/logo.png'
 import { FaRegUser } from "react-icons/fa";
 import ModalBox from '../../ModalBox/ModalBox';
+import useAuth from '../../../Hooks/useAuth';
+import Profile from '../../Profile';
 
 const NavBar = () => {
     const [isstickey, setStickey] = useState(false)
+
+    const { user } = useAuth()
 
     // handel control function
     useEffect(() => {
@@ -111,7 +115,13 @@ const NavBar = () => {
                         </div>
                     </label>
                     {/* contact btn */}
-                    <button onClick={() => document.getElementById('my_modal_5').showModal()} className="btn bg-green rounded-full flex items-center gap-2 px-6"><FaRegUser />Login</button>
+                    {
+                        user ? <>
+                            <Profile user={user}/>
+                        </>
+                            :
+                            <button onClick={() => document.getElementById('my_modal_5').showModal()} className="btn bg-green rounded-full flex items-center gap-2 px-6"><FaRegUser />Login</button>
+                    }
                     <ModalBox />
                 </div>
             </div>

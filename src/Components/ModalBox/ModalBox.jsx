@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 const ModalBox = () => {
@@ -9,15 +11,50 @@ const ModalBox = () => {
         register,
         handleSubmit,
         formState: { errors },
-      } = useForm()
+    } = useForm()
 
-      const [errorMessage, setErrorMessage] = useState("");
-      const onSubmit = (data) => console.log(data)
+    const { signUpWithGmail, login } = useAuth()
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+
+    const handelLogin = () => {
+        signUpWithGmail()
+            .then((result) => {
+                const user = result.user;
+                toast.success('User Login Successfully!');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+
+    const onSubmit = (data) => {
+        const email = data.email
+        const password = data.password
+        // console.log(email,password)
+        login(email, password)
+            .then((result) => {
+                const user = result.user
+                toast.success('User Login Successfully!')
+                // Close the modal
+                document.getElementById("my_modal_5").close();
+
+                // Navigate to the specified path
+                navigate(from, { replace: true });
+            }).catch((err) => {
+                const errorMessage = err.message
+                setErrorMessage("Provide a correct email and password")
+            })
+    }
     return (
         <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
             <div className="modal-box">
                 <div className="modal-action flex flex-col justify-center mt-0">
-                    <form  onSubmit={handleSubmit(onSubmit)}  className="card-body" method="dialog">
+                    <form onSubmit={handleSubmit(onSubmit)} className="card-body" method="dialog">
                         <h3 className="font-bold text-lg">Please Login!</h3>
 
                         {/* email */}
@@ -81,7 +118,7 @@ const ModalBox = () => {
 
                     {/* social sign in */}
                     <div className="text-center space-x-3 mb-5">
-                        <button className="btn btn-circle hover:bg-green hover:text-white">
+                        <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handelLogin}>
                             <FaGoogle />
                         </button>
                         <button className="btn btn-circle hover:bg-green hover:text-white">

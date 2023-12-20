@@ -3,6 +3,9 @@ import MainLayOut from "../LayOut/MainLayOut";
 import Home from "../Pages/Home/Home";
 import Menu from "../Pages/Menu/Menu";
 import SignUp from "../Components/SignUp/SignUp";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import UpdateProfile from "../Pages/DashBord/UserDashBord/UpdateProfile";
+
 
 
 
@@ -17,7 +20,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/menu",
-        element: <Menu></Menu>
+        element: <PrivateRoute>
+          <Menu></Menu>
+        </PrivateRoute>
+      },
+      {
+        path:'/update-profile',
+        element:<UpdateProfile></UpdateProfile>
       },
 
     ],

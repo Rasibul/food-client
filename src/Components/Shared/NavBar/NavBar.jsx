@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import logo from '/logo.png'
-import { BiPhoneCall } from "react-icons/bi";
+import { FaRegUser } from "react-icons/fa";
+import ModalBox from '../../ModalBox/ModalBox';
 
 const NavBar = () => {
     const [isstickey, setStickey] = useState(false)
@@ -110,7 +111,8 @@ const NavBar = () => {
                         </div>
                     </label>
                     {/* contact btn */}
-                    <a className="btn bg-green rounded-full flex items-center gap-2 px-6"><BiPhoneCall></BiPhoneCall>Contact</a>
+                    <button onClick={() => document.getElementById('my_modal_5').showModal()} className="btn bg-green rounded-full flex items-center gap-2 px-6"><FaRegUser />Login</button>
+                    <ModalBox />
                 </div>
             </div>
         </header>

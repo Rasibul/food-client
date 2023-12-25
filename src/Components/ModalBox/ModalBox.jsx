@@ -22,8 +22,9 @@ const ModalBox = () => {
 
     const handelLogin = () => {
         signUpWithGmail()
-            .then((result) => {
-                const user = result.user;
+            .then(() => {
+                // const user = result.user;
+                // console.log(user)
                 toast.success('User Login Successfully!');
             })
             .catch((err) => {

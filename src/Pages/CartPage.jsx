@@ -1,6 +1,42 @@
+import Swal from "sweetalert2";
+import useCart from "../Hooks/useCart";
+import { FaTrash } from "react-icons/fa";
 
 
 const CartPage = () => {
+    const [cart, refetch] = useCart()
+
+    const handelDelete = (item) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:5000/carts/${item._id}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your Product has been deleted.',
+                                'success',
+
+                            )
+                            refetch()
+                        }
+                    })
+
+            }
+        })
+
+    }
     return (
         <div className="section-container">
             <div className="xl:px-24 bg-gradient-to-r from-0% from-[#FAFAFA] to-[#FCFCFC] to-100%">
@@ -23,38 +59,36 @@ const CartPage = () => {
                                 <th>#</th>
                                 <th>Food</th>
                                 <th>Item Name</th>
-                                <th>Quantity</th>
+                                <th>Quinty</th>
                                 <th>Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {/* row 1 */}
-                            <tr>
-                                <th>1</th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="mask mask-squircle w-12 h-12">
-                                                <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
+                            {
+                                cart.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle w-12 h-12">
+                                                        <img src={item?.image} alt="" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <div className="font-bold">Hart Hagerty</div>
-                                            <div className="text-sm opacity-50">United States</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    Zemlak, Daniel and Leannon
-                                    <br />
-                                    <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-                                </td>
-                                <td>Purple</td>
-                                <th>
-                                    <button className="btn btn-ghost btn-xs">details</button>
-                                </th>
-                            </tr>
+                                        </td>
+                                        <td>
+                                            {item?.name}
+                                        </td>
+                                        <td>{item?.quinty}</td>
+                                        <td>{item?.price}</td>
+                                        <th>
+                                            <button onClick={() => handelDelete(item)} className="btn btn-ghost text-red btn-xs"><FaTrash></FaTrash></button>
+                                        </th>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>

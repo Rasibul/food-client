@@ -1,10 +1,97 @@
 import Swal from "sweetalert2";
 import useCart from "../Hooks/useCart";
 import { FaTrash } from "react-icons/fa";
+import useAuth from "../Hooks/useAuth";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 
 const CartPage = () => {
     const [cart, refetch] = useCart()
+    const { user } = useAuth()
+    const [cartItems, setCartItems] = useState()
+
+
+    // calculate prtice
+
+    const calculatePrice = (item) =>{
+        return item.price * item.quinty 
+    }
+
+
+
+    // increase item
+    useEffect(() => {
+        setCartItems(cart);
+    }, [cart]);
+
+    const handleIncrease = async (item) => {
+        try {
+            const response = await fetch(`http://localhost:5000/carts/${item._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ quinty: item.quinty + 1 }),
+            });
+
+            if (response.ok) {
+                const updatedCart = cartItems.map((cartItem) => {
+                    if (cartItem.id === item.id) {
+                        return {
+                            ...cartItem,
+                            quinty: cartItem.quinty + 1,
+                        };
+                    }
+                    return cartItem;
+                });
+                refetch();
+                setCartItems(updatedCart);
+            } else {
+                console.error("Failed to update quantity");
+            }
+        } catch (error) {
+            console.error("Error updating quantity:", error);
+        }
+    };
+
+    // dicrease item
+
+    const handleDecrease = async (item) => {
+        if (item.quinty > 1) {
+            try {
+                const response = await fetch(
+                    `http://localhost:5000/carts/${item._id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ quinty: item.quinty - 1 }),
+                    }
+                );
+
+                if (response.ok) {
+                    const updatedCart = cartItems.map((cartItem) => {
+                        if (cartItem.id === item.id) {
+                            return {
+                                ...cartItem,
+                                quinty: cartItem.quinty - 1,
+                            };
+                        }
+                        return cartItem;
+                    });
+                    await refetch();
+                    setCartItems(updatedCart);
+                } else {
+                    console.error("Failed to update quantity");
+                }
+            } catch (error) {
+                console.error("Error updating quantity:", error);
+            }
+        }
+    };
+
 
     const handelDelete = (item) => {
         Swal.fire({
@@ -81,8 +168,12 @@ const CartPage = () => {
                                         <td>
                                             {item?.name}
                                         </td>
-                                        <td>{item?.quinty}</td>
-                                        <td>{item?.price}</td>
+                                        <td>
+                                            <button onClick={() => handleDecrease(item)} className="btn btn-xs">-</button>
+                                            <input type="number" value={item?.quinty} className="w-10  overflow-hidden text-center" onChange={() => console.log(item?.quinty)} />
+                                            <button onClick={() => handleIncrease(item)} className="btn btn-xs">+</button>
+                                        </td>
+                                        <td>${calculatePrice(item)}</td>
                                         <th>
                                             <button onClick={() => handelDelete(item)} className="btn btn-ghost text-red btn-xs"><FaTrash></FaTrash></button>
                                         </th>
@@ -91,6 +182,25 @@ const CartPage = () => {
                             }
                         </tbody>
                     </table>
+                </div>
+            </div>
+            {/* customer details section */}
+            <div className="my-12 flex flex-col md:flex-row justify-center items-start">
+                <div className="md:w-1/2 space-y-3">
+                    <h3 className="font-bold">Customer Details</h3>
+                    <p>Name: {user?.displayName}</p>
+                    <p>Email: {user?.email}</p>
+                    <p>User Id: {user?.uid}</p>
+                </div>
+                <div className="md:w-1/2 space-y-3">
+                    <h3 className="font-bold">Food Details</h3>
+                    <p>Total Items: {cart?.length}</p>
+                    <p>Total Price: $0.00</p>
+                    <Link>
+                        <button className="btn bg-green text-white mt-4">
+                            Procceed Checkout
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

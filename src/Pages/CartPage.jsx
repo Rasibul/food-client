@@ -14,8 +14,8 @@ const CartPage = () => {
 
     // calculate prtice
 
-    const calculatePrice = (item) =>{
-        return item.price * item.quinty 
+    const calculatePrice = (item) => {
+        return item.price * item.quinty
     }
 
 
@@ -91,6 +91,14 @@ const CartPage = () => {
             }
         }
     };
+
+    // calculate total price 
+
+    const cartSubTotal = cart.reduce((total, item) => {
+        return total + calculatePrice(item)
+    }, 0)
+
+    const orderTotal = cartSubTotal
 
 
     const handelDelete = (item) => {
@@ -173,7 +181,7 @@ const CartPage = () => {
                                             <input type="number" value={item?.quinty} className="w-10  overflow-hidden text-center" onChange={() => console.log(item?.quinty)} />
                                             <button onClick={() => handleIncrease(item)} className="btn btn-xs">+</button>
                                         </td>
-                                        <td>${calculatePrice(item)}</td>
+                                        <td>${calculatePrice(item).toFixed(2)}</td>
                                         <th>
                                             <button onClick={() => handelDelete(item)} className="btn btn-ghost text-red btn-xs"><FaTrash></FaTrash></button>
                                         </th>
@@ -195,7 +203,7 @@ const CartPage = () => {
                 <div className="md:w-1/2 space-y-3">
                     <h3 className="font-bold">Food Details</h3>
                     <p>Total Items: {cart?.length}</p>
-                    <p>Total Price: $0.00</p>
+                    <p>Total Price: ${orderTotal.toFixed(2)}</p>
                     <Link>
                         <button className="btn bg-green text-white mt-4">
                             Procceed Checkout

@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import useAuth from "../Hooks/useAuth";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const CartPage = () => {
@@ -101,37 +102,60 @@ const CartPage = () => {
     const orderTotal = cartSubTotal
 
 
-    const handelDelete = (item) => {
+    // const handelDelete = (item) => {
+    //     Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: "You won't be able to revert this!",
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes, delete it!'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             fetch(`http://localhost:5000/carts/${item._id}`, {
+    //                 method: 'DELETE'
+    //             })
+    //                 .then(res => res.json())
+    //                 .then(data => {
+    //                     if (data.deletedCount > 0) {
+    //                         Swal.fire(
+    //                             'Deleted!',
+    //                             'Your Product has been deleted.',
+    //                             'success',
+
+    //                         )
+    //                         refetch()
+    //                     }
+    //                 })
+
+    //         }
+    //     })
+
+    // }
+    const handleDelete = (item) => {
         Swal.fire({
-            title: 'Are you sure?',
+            title: "Are you sure?",
             text: "You won't be able to revert this!",
-            icon: 'warning',
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/carts/${item._id}`, {
-                    method: 'DELETE'
+                axios.delete(`http://localhost:5000/carts/${item._id}`).then(response => {
+                    if (response) {
+                        refetch();
+                        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                    }
                 })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.deletedCount > 0) {
-                            Swal.fire(
-                                'Deleted!',
-                                'Your Product has been deleted.',
-                                'success',
-
-                            )
-                            refetch()
-                        }
-                    })
-
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
-        })
-
-    }
+        });
+    };
     return (
         <div className="section-container">
             <div className="xl:px-24 bg-gradient-to-r from-0% from-[#FAFAFA] to-[#FCFCFC] to-100%">
@@ -183,7 +207,7 @@ const CartPage = () => {
                                         </td>
                                         <td>${calculatePrice(item).toFixed(2)}</td>
                                         <th>
-                                            <button onClick={() => handelDelete(item)} className="btn btn-ghost text-red btn-xs"><FaTrash></FaTrash></button>
+                                            <button onClick={() => handleDelete(item)} className="btn btn-ghost text-red btn-xs"><FaTrash></FaTrash></button>
                                         </th>
                                     </tr>
                                 ))

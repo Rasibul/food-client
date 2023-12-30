@@ -7,33 +7,57 @@ import Swal from "sweetalert2";
 
 
 const FoodCard = ({ item }) => {
-    const {name,recipe,image,price,_id} = item
+    const { name, recipe, image, price, _id } = item
     const [isHeartFiled, setIsHeartFilled] = useState(false)
-    const {user} = useAuth()
+    const { user } = useAuth()
     const handelHeartClick = () => {
         setIsHeartFilled(!isHeartFiled)
     }
 
-    const handelAddToCArt = async (item) =>{
+    const handelAddToCArt = async (item) => {
         // console.log(item)
-        if(user && user?.email){
+        if (user && user?.email) {
             const cartItem = {
-                menuItemId:_id,
-                quinty:1,
-                price,image,recipe,name,
-                email:user.email
+                menuItemId: _id,
+                quinty: 1,
+                price, image, recipe, name,
+                email: user.email
             }
             // console.log(cartItem);
 
-            const allCart = await axios.post('http://localhost:5000/carts',cartItem)
-            // console.log(allCart)
-            if(allCart.data.insertedId){
-                Swal.fire({
-                    title: `${name} Added Successfully`,
-                    text: "You clicked the button!",
-                    icon: "success"
-                  });
-            }
+            const allCart = await axios.post('http://localhost:5000/carts', cartItem)
+                // console.log(allCart)
+                // if(allCart.data.insertedId){
+                //     Swal.fire({
+                //         title: `${name} Added Successfully`,
+                //         text: "You clicked the button!",
+                //         icon: "success"
+                //       });
+                // }
+                .then((response) => {
+                    // console.log(response);
+                    if (response) {
+                        //   refetch(); 
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `${name} Added Successfully.`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log(error.response.data.message);
+                    const errorMessage = error.response.data.message;
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: `${errorMessage}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                });
         }
     }
 
@@ -56,7 +80,7 @@ const FoodCard = ({ item }) => {
                 <p className="hidden md:block">{item?.recipe}</p>
                 <div className="card-actions flex justify-between items-center mt-2">
                     <h5 className="font-semibold">Price: <span className="text-sm text-red">$</span>{item.price}</h5>
-                    <button onClick={()=>handelAddToCArt(item)} className="btn bg-green text-white">Add To Cart</button>
+                    <button onClick={() => handelAddToCArt(item)} className="btn bg-green text-white">Add To Cart</button>
                 </div>
             </div>
         </div>

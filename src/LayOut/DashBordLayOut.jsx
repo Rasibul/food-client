@@ -1,24 +1,43 @@
 import { Link, Outlet } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
-import { FaEdit, FaUsers } from "react-icons/fa";
+import { FaEdit, FaHome, FaLocationArrow, FaQuestionCircle, FaShoppingCart, FaUser, FaUsers } from "react-icons/fa";
 import { CiShoppingCart } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import logo from '/logo.png'
 
 
 const DashBordLayOut = () => {
+
+    const shareLinks = (
+        <>
+            <li className="mb-3">
+                <Link to='/'> <FaHome />Home</Link>
+            </li>
+            <li className="mb-3">
+                <Link to='/menu'> <FaShoppingCart />Menue</Link>
+            </li>
+            <li className="mb-3">
+                <Link to='/menu'> <FaLocationArrow />Order Tracking</Link>
+            </li>
+            <li className="mb-3">
+                <Link to='/menu'> <FaQuestionCircle />Customer Support</Link>
+            </li>
+        </>
+    )
     return (
         <div>
             <div className="drawer sm:drawer-open">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content flex flex-col sm:items-start sm:justify-start my-2">
                     <div className="flex items-center justify-between mx-4">
-                        <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">
+                        <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button sm:hidden lg:hidden">
                             <MdDashboard />
                         </label>
-                        <button className="btn px-6 rounded-full bg-green text-white sm:hidden">Log Out</button>
+                        <button className="btn px-6 rounded-full bg-green text-white sm:hidden"> <FaUser />Log Out</button>
                     </div>
-                    <Outlet />
+                    <div className="mt-5 md:mt-2 mx-4">
+                        <Outlet />
+                    </div>
                 </div>
 
                 <div className="drawer-side">
@@ -33,20 +52,25 @@ const DashBordLayOut = () => {
                         </li>
                         <hr></hr>
                         <li className="mb-3">
-                            <Link to='/dashbord'> <MdDashboard /> DashBoard</Link>
+                            <Link to='/dashboard'> <MdDashboard /> DashBoard</Link>
                         </li>
                         <li>
-                            <Link to='/dashbord'> <CiShoppingCart /> Mange Booking</Link>
+                            <Link to='/dashboard'> <CiShoppingCart /> Mange Booking</Link>
                         </li>
                         <li>
-                            <Link to='/dashbord'> <IoIosAddCircleOutline /> Add Item</Link>
+                            <Link to='/dashboard'> <IoIosAddCircleOutline /> Add Item</Link>
                         </li>
                         <li>
-                            <Link to='/dashbord'> <FaEdit /> Menu Items</Link>
+                            <Link to='/dashboard'> <FaEdit /> Menu Items</Link>
                         </li>
-                        <li>
-                            <Link to='/dashbord/users'> <FaUsers /> All User</Link>
+                        <li className="mb-3">
+                            <Link to='/dashboard/users'> <FaUsers /> All User</Link>
                         </li>
+                        <hr />
+                        {/* share links */}
+                        {
+                            shareLinks
+                        }
                     </ul>
 
                 </div>

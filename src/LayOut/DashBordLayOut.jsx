@@ -4,9 +4,13 @@ import { FaEdit, FaHome, FaLocationArrow, FaQuestionCircle, FaShoppingCart, FaUs
 import { CiShoppingCart } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import logo from '/logo.png'
+import useAdmin from "../Hooks/useAdmin";
+import useAuth from "../Hooks/useAuth";
 
 
 const DashBordLayOut = () => {
+    const {loading} = useAuth()
+    const [isAdmin,isAdminLoading] = useAdmin()
 
     const shareLinks = (
         <>

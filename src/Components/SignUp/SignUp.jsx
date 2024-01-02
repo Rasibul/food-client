@@ -5,6 +5,7 @@ import ModalBox from "../ModalBox/ModalBox";
 import useAuth from "../../Hooks/useAuth";
 import axios from 'axios';
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const SignUp = () => {
     const {
@@ -17,6 +18,7 @@ const SignUp = () => {
     const navigate = useNavigate();
     // const from = location.state?.from?.pathname || "/";
     const { createUser, signUpWithGmail, updateUserProfile } = useAuth()
+    const axiosPublic = useAxiosPublic()
 
     const handelLogin = () => {
         signUpWithGmail()
@@ -26,7 +28,7 @@ const SignUp = () => {
                     name: result?.user?.displayName,
                     email: result?.user?.email
                 }
-                axios.post('http://localhost:5000/users', userInfo)
+                axiosPublic.post('/users', userInfo)
                     .then(() => {
                         Swal.fire({
                             position: 'center',
@@ -57,7 +59,7 @@ const SignUp = () => {
                             name: data.name,
                             email: data.email
                         }
-                        axios.post('http://localhost:5000/users', userInfo)
+                        axiosPublic.post('/users', userInfo)
                             .then(() => {
                                 Swal.fire({
                                     position: 'center',
@@ -127,7 +129,7 @@ const SignUp = () => {
                         errorMessage ? <p className="text-red text-xs italic">{errorMessage}</p> : ""
                     } */}
 
-                    {/* login btn */}
+                    {/* SignUp btn */}
                     <div className="form-control mt-4">
                         <input
                             type="submit"

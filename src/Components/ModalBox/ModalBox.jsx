@@ -5,6 +5,7 @@ import { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 
 const ModalBox = () => {
@@ -16,6 +17,7 @@ const ModalBox = () => {
 
     const { signUpWithGmail, login } = useAuth()
     const [errorMessage, setErrorMessage] = useState("");
+    const axiosPublic = useAxiosPublic()
 
     // const location = useLocation();
     const navigate = useNavigate();
@@ -29,7 +31,7 @@ const ModalBox = () => {
                     name: result?.user?.displayName,
                     email: result?.user?.email
                 }
-                axios.post('http://localhost:5000/users', userInfo)
+                axiosPublic.post('/users', userInfo)
                     .then(() => {
                         Swal.fire({
                             position: 'center',
@@ -58,7 +60,7 @@ const ModalBox = () => {
                     name: data.name,
                     email: data.email
                 }
-                axios.post('http://localhost:5000/users', userInfo)
+                axiosPublic.post('/users', userInfo)
                     .then(() => {
                         Swal.fire({
                             position: 'center',

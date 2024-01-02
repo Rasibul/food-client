@@ -1,9 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import ModalBox from "../ModalBox/ModalBox";
 import useAuth from "../../Hooks/useAuth";
-import toast from "react-hot-toast";
+import axios from 'axios';
+import Swal from "sweetalert2";
 
 const SignUp = () => {
     const {
@@ -12,17 +13,30 @@ const SignUp = () => {
         formState: { errors },
     } = useForm()
 
-    const location = useLocation();
+    // const location = useLocation();
     const navigate = useNavigate();
-    const from = location.state?.from?.pathname || "/";
-    const { createUser,signUpWithGmail } = useAuth()
+    // const from = location.state?.from?.pathname || "/";
+    const { createUser, signUpWithGmail, updateUserProfile } = useAuth()
 
     const handelLogin = () => {
         signUpWithGmail()
-            .then(() => {
+            .then((result) => {
                 // const user = result.user;
-                toast.success('User Login Successfully!');
-                navigate('/')
+                const userInfo = {
+                    name: result?.user?.displayName,
+                    email: result?.user?.email
+                }
+                axios.post('http://localhost:5000/users', userInfo)
+                    .then(() => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: "Create User",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        navigate('/')
+                    })
             })
             .catch((err) => {
                 console.log(err);
@@ -34,15 +48,29 @@ const SignUp = () => {
         const email = data.email
         const password = data.password
         createUser(email, password)
-            .then((result) => {
-                const user = result.user
-                console.log(user)
-                toast.success('create an user Successfully!')
-                // document.getElementById("my_modal_5").close()
-                navigate(from, { replace: true })
+            .then(() => {
+                // const user = result.user
+                // console.log(user)
+                updateUserProfile(data.email, data.photoURL)
+                    .then(() => {
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axios.post('http://localhost:5000/users', userInfo)
+                            .then(() => {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: "Create User",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                navigate('/')
+                            })
+                    })
             }).catch((err) => {
-                const errorCode = err.code
-                const errorMessage = err.message
+              console.log(err)
             })
     }
     return (
@@ -51,19 +79,18 @@ const SignUp = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="card-body" method="dialog">
                     <h3 className="font-bold text-lg">Create An Account!</h3>
 
-                    {/* Name */}
-                    {/* <div className="form-control">
+                    {/* name */}
+                    <div className="form-control">
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
                         <input
-                            type="text"
-                            placeholder="Your Name Here"
+                            type="name"
+                            placeholder="Your name"
                             className="input input-bordered"
-                        // name="name"
-                        // {...register("name")}
+                            {...register("name")}
                         />
-                    </div> */}
+                    </div>
                     {/* email */}
                     <div className="form-control">
                         <label className="label">

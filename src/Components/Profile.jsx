@@ -51,6 +51,9 @@ const Profile = ({ user }) => {
                             <a>Setting</a>
                         </li>
                         <li>
+                            <Link to='/dashboard'>Dashboard</Link>
+                        </li>
+                        <li>
                             <a onClick={handleLogout}>LogOut</a>
                         </li>
                     </ul>

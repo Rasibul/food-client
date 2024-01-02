@@ -3,11 +3,16 @@ import useAuth from "./useAuth";
 
 const useCart = () => {
     const { user } = useAuth();
+    const token = localStorage.getItem("access token")
 
     const { refetch, data: cart = [] } = useQuery({
         queryKey: ['carts', user?.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/carts?email=${user?.email}`);
+            const res = await fetch(`http://localhost:5000/carts?email=${user?.email}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
 
             if (!res.ok) {
                 throw new Error("Failed to fetch cart data");

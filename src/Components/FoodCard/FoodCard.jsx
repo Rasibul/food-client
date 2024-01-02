@@ -26,14 +26,6 @@ const FoodCard = ({ item }) => {
             // console.log(cartItem);
 
             const allCart = await axios.post('http://localhost:5000/carts', cartItem)
-                // console.log(allCart)
-                // if(allCart.data.insertedId){
-                //     Swal.fire({
-                //         title: `${name} Added Successfully`,
-                //         text: "You clicked the button!",
-                //         icon: "success"
-                //       });
-                // }
                 .then((response) => {
                     // console.log(response);
                     if (response) {

@@ -1,9 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
-import toast from "react-hot-toast";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 const ModalBox = () => {
@@ -16,16 +17,29 @@ const ModalBox = () => {
     const { signUpWithGmail, login } = useAuth()
     const [errorMessage, setErrorMessage] = useState("");
 
-    const location = useLocation();
+    // const location = useLocation();
     const navigate = useNavigate();
-    const from = location.state?.from?.pathname || "/";
+    // const from = location.state?.from?.pathname || "/";
 
     const handelLogin = () => {
         signUpWithGmail()
-            .then(() => {
+            .then((result) => {
                 // const user = result.user;
-                // console.log(user)
-                toast.success('User Login Successfully!');
+                const userInfo = {
+                    name: result?.user?.displayName,
+                    email: result?.user?.email
+                }
+                axios.post('http://localhost:5000/users', userInfo)
+                    .then(() => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: "Create User",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        navigate('/')
+                    })
             })
             .catch((err) => {
                 console.log(err);
@@ -38,14 +52,23 @@ const ModalBox = () => {
         const password = data.password
         // console.log(email,password)
         login(email, password)
-            .then((result) => {
-                const user = result.user
-                toast.success('User Login Successfully!')
-                // Close the modal
-                document.getElementById("my_modal_5").close();
-
-                // Navigate to the specified path
-                navigate(from, { replace: true });
+            .then(() => {
+                // const user = result.user
+                const userInfo = {
+                    name: data.name,
+                    email: data.email
+                }
+                axios.post('http://localhost:5000/users', userInfo)
+                    .then(() => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: "Create User",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        navigate('/')
+                    })
             }).catch((err) => {
                 const errorMessage = err.message
                 setErrorMessage("Provide a correct email and password")

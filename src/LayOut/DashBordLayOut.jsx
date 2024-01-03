@@ -65,7 +65,7 @@ const DashBordLayOut = () => {
                             <Link to='/dashboard/add-menu'> <IoIosAddCircleOutline /> Add Menu</Link>
                         </li>
                         <li>
-                            <Link to='/dashboard'> <FaEdit /> Menu Items</Link>
+                            <Link to='/dashboard/manage-items'> <FaEdit /> Menu Items</Link>
                         </li>
                         <li className="mb-3">
                             <Link to='/dashboard/users'> <FaUsers /> All User</Link>

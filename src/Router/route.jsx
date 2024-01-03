@@ -11,6 +11,7 @@ import DashBord from "../Pages/Admin/DashBord/DashBord";
 import Users from "../Pages/Admin/DashBord/Users";
 import Login from "../Components/Login/Login";
 import AddMenu from "../Pages/Admin/AddMenu/AddMenu";
+import ManageItems from "../Pages/Admin/ManageItems/ManageItems";
 
 
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: 'add-menu',
         element: <AddMenu></AddMenu>
+      },
+      {
+        path:'manage-items',
+        element:<ManageItems></ManageItems>
       }
     ]
   }

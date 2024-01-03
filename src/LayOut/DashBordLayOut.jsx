@@ -62,7 +62,7 @@ const DashBordLayOut = () => {
                             <Link to='/dashboard'> <CiShoppingCart /> Mange Booking</Link>
                         </li>
                         <li>
-                            <Link to='/dashboard'> <IoIosAddCircleOutline /> Add Item</Link>
+                            <Link to='/dashboard/add-menu'> <IoIosAddCircleOutline /> Add Menu</Link>
                         </li>
                         <li>
                             <Link to='/dashboard'> <FaEdit /> Menu Items</Link>

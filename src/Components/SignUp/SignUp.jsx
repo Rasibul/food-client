@@ -3,7 +3,6 @@ import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import ModalBox from "../ModalBox/ModalBox";
 import useAuth from "../../Hooks/useAuth";
-import axios from 'axios';
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
@@ -140,17 +139,13 @@ const SignUp = () => {
 
                     <p className="text-center my-2">
                         Alredy have an account?{" "}
-                        <button onClick={() => document.getElementById('my_modal_5').showModal()}>
-                            <Link to="/signup" className="underline text-red ml-1">
+                        <button>
+                            <Link to="/login" className="underline text-red ml-1">
                                 Login Now
                             </Link>{" "}
                         </button>
                     </p>
 
-                    <Link to="/"
-                        onClick={() => document.getElementById("my_modal_5").close()}
-                        className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                    >✕</Link>
                 </form>
 
                 {/* social sign in */}

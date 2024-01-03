@@ -9,6 +9,8 @@ import CartPage from "../Pages/CartPage";
 import DashBordLayOut from "../LayOut/DashBordLayOut";
 import DashBord from "../Pages/Admin/DashBord/DashBord";
 import Users from "../Pages/Admin/DashBord/Users";
+import Login from "../Components/Login/Login";
+import AddMenu from "../Pages/Admin/AddMenu/AddMenu";
 
 
 
@@ -29,31 +31,39 @@ const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
-        path:'/cart-page',
-        element:<CartPage></CartPage>
+        path: '/cart-page',
+        element: <CartPage></CartPage>
       },
       {
-        path:'/update-profile',
-        element:<UpdateProfile></UpdateProfile>
+        path: '/update-profile',
+        element: <UpdateProfile></UpdateProfile>
       },
 
     ],
+  },
+  {
+    path: "/login",
+    element: <Login></Login>
   },
   {
     path: "/signup",
     element: <SignUp></SignUp>
   },
   {
-    path:'dashboard',
-    element:<DashBordLayOut></DashBordLayOut>,
-    children:[
+    path: 'dashboard',
+    element: <DashBordLayOut></DashBordLayOut>,
+    children: [
       {
-        path:'',
-        element:<DashBord></DashBord>
+        path: '',
+        element: <DashBord></DashBord>
       },
       {
-        path:'users',
-        element:<Users></Users>
+        path: 'users',
+        element: <Users></Users>
+      },
+      {
+        path: 'add-menu',
+        element: <AddMenu></AddMenu>
       }
     ]
   }
